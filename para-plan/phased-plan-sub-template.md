@@ -1,15 +1,34 @@
-# Phase {PHASE_NUMBER}: {PHASE_NAME}
+# Phase {PHASE_ID}: {PHASE_NAME}
 
-**Parent Plan:** `context/plans/{DATE}-{TASK_NAME}.md`
-**Date:** {DATE}
-**Status:** Pending
-**Dependencies:** {DEPENDENCIES}
+> **Parent plan:** `{DATE}-{TASK_NAME}.md`
+> **Estimated time:** {ESTIMATED_TIME}
+> **Prerequisite:** {PREREQUISITES_OR_NONE}
+> **Outcome:** {ONE_SENTENCE_DESCRIBING_WHAT_IS_TRUE_WHEN_DONE}
 
 ---
 
-## Phase Objective
+## Objective
 
 [Clear, specific statement of what this phase accomplishes. Should be independently valuable and testable.]
+
+---
+
+## Key Context from Master Plan
+
+[Copy (not reference) the specific decisions, principles, and contracts that are needed for this phase. The test: "Could someone execute this sub-plan without reading the master plan?"]
+
+**Relevant principles:**
+- [Principle from master plan that applies to this phase]
+- [Principle from master plan that applies to this phase]
+
+**Relevant architecture decisions:**
+- [Decision]: [Choice] -- [brief rationale]
+- [Decision]: [Choice] -- [brief rationale]
+
+**Contracts this phase implements or depends on:**
+```
+[Interface definitions, API shapes, or message schemas needed for this phase]
+```
 
 ---
 
@@ -17,78 +36,38 @@
 
 ### In Scope
 
-[What IS included in this phase]
-
 - [Item 1]
 - [Item 2]
-- [Item 3]
 
 ### Out of Scope
 
-[What is NOT included - will be handled in later phases]
-
-- [Item 1]
-- [Item 2]
+- [Item 1 -- which phase handles it]
+- [Item 2 -- which phase handles it]
 
 ---
 
 ## Implementation Steps
 
-[Each step follows spec-driven TDD: confirm spec → write tests → implement → verify → commit.]
+> Each checklist item below maps to one git commit. The checkbox text is the commit message.
+> Tests come BEFORE the implementation they cover (TDD).
 
-### Step 1: [Step Name]
+- [ ] **Write {contract/unit} test suite for {component}**
+  - [Sub-task]
+  - **Tests:** `TestName` -- [what it asserts]. Won't compile yet (no types). That's expected.
 
-[Description of what this step does]
+- [ ] **Write acceptance test skeleton for {feature}**
+  - [Sub-task]
+  - **Tests:** `TestAcceptanceName` -- stays red until implementation is complete
 
-- [Sub-task A]
-- [Sub-task B]
-- **Tests:** [Specific tests for this step]
+- [ ] **Implement {component}**
+  - **File(s):** `path/to/file.ext`
+  - [Sub-task]
+  - **Makes green:** [which tests from above now pass]
 
-### Step 2: [Step Name]
-
-[Description of what this step does]
-
-- [Sub-task A]
-- [Sub-task B]
-- **Tests:** [Specific tests for this step]
-
-### Step 3: [Step Name]
-
-[Description of what this step does]
-
-- [Sub-task A]
-- [Sub-task B]
-- **Tests:** [Specific tests for this step]
-
-[Add more steps as needed]
-
----
-
-## Files to be Created/Modified
-
-**New files:**
-- `[path/to/new/file.ts]` - [Purpose]
-
-**Modified files:**
-- `[path/to/existing/file.ts]` - [What changes and why]
-
----
-
-## Dependencies
-
-### Prerequisites
-
-[What must be complete before starting this phase]
-
-- [Prerequisite 1]
-- [Prerequisite 2]
-
-### Enables Future Phases
-
-[What this phase provides for later phases]
-
-- [Item 1]
-- [Item 2]
+- [ ] **Implement {component}**
+  - **File(s):** `path/to/file.ext`
+  - [Sub-task]
+  - **Makes green:** [which tests now pass]
 
 ---
 
@@ -102,17 +81,25 @@
 
 ---
 
-## Success Criteria
+## Green Tests After This Phase
 
-This phase is complete when:
+- {GREEN_OR_RED} {Test suite 1} -- [brief description]
+- {GREEN_OR_RED} {Test suite 2} -- [brief description]
+- {GREEN_OR_RED} {Test suite 3} -- [brief description]
+- {GREEN_OR_RED} E2E acceptance test -- [red if not yet, green if this phase completes it]
 
-- [ ] All implementation steps completed
-- [ ] All new files created and properly structured
-- [ ] Unit tests written and passing
-- [ ] Manual testing completed successfully
-- [ ] Code follows project conventions
-- [ ] Ready for code review
+[Use checkmarks for green, crosses for still-red. This should match the progressive regression rule in the master plan.]
 
 ---
 
-**Next Step:** Once reviewed and approved, run `para-execute --phase={PHASE_NUMBER}` to begin implementation.
+## Files Created/Modified
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `path/to/new/file.ext` | Create | [What it does] |
+| `path/to/new/file_test.ext` | Create | [What it tests] |
+| `path/to/existing/file.ext` | Modify | [What changes and why] |
+
+---
+
+**Next Step:** Once reviewed and approved, run `para-execute --phase={PHASE_ID}` to begin implementation.
