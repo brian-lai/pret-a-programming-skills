@@ -117,7 +117,7 @@ Skills are organized with co-located templates:
 
 ```
 pret-a-programming-skills/
-├── para-init/           # SKILL.md + METHODOLOGY.md + 4 templates
+├── para-init/           # SKILL.md + METHODOLOGY.md + 3 templates + context-schema.md
 ├── para-research/       # SKILL.md + research-template.md
 ├── para-plan/           # SKILL.md + 3 plan templates
 ├── para-review/         # SKILL.md

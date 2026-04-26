@@ -1,8 +1,8 @@
-# Global CLAUDE.md -- PARA Workflow Guide
+# Global Methodology -- PARA Workflow Guide
 
-> **Location:** `~/.claude/CLAUDE.md`
 > **Purpose:** Defines the PARA workflow methodology for all projects.
-> Project-specific context belongs in each project's local `CLAUDE.md`.
+> Install this as your tool's global instructions file (e.g., `~/.claude/CLAUDE.md` for Claude Code, or the equivalent for your agent CLI tool).
+> Project-specific context belongs in each project's local instructions file.
 
 ---
 
