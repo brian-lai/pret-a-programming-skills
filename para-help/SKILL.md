@@ -24,7 +24,7 @@ Display the following reference guide exactly:
 
 # PARA-Programming Quick Reference
 
-**Workflow:** Plan → Review → Execute → Summarize → Archive
+**Workflow:** Research -> Plan -> Review Plan -> Execute -> Review PR -> Summarize -> Archive
 
 ## When to Use PARA
 
@@ -37,8 +37,11 @@ Display the following reference guide exactly:
 | Skill | Purpose |
 |-------|---------|
 | `para-init` | Initialize PARA structure in a project |
+| `para-research [task]` | Deep codebase exploration producing a research document |
 | `para-plan [task]` | Create a planning document (collaborative) |
-| `para-execute` | Create branch, extract todos, start execution |
+| `para-review --plan\|--pr` | Staff+ independent agent review of plan or PR |
+| `para-execute` | Create branch, extract todos, start execution with spec-driven TDD |
+| `para-workflow` | Orchestrate full multi-phase cycle (execute -> PR -> review -> summarize -> merge) |
 | `para-summarize` | Generate post-work summary |
 | `para-archive` | Archive context and start fresh |
 | `para-status` | Check current workflow state |
@@ -48,9 +51,16 @@ Display the following reference guide exactly:
 ## Typical Flow
 
 ```
+para-research Add user authentication
+  -> Produces research doc
 para-plan Add user authentication
-  → Review the plan
-  → AI implements (commits after each todo)
+  -> Uses research doc, asks questions, creates plan
+para-review --plan
+  -> Staff+ review of the plan
+para-execute
+  -> AI implements (commits after each todo with TDD)
+para-review --pr
+  -> Staff+ review of the implementation
 para-summarize
 para-archive
 ```
@@ -58,10 +68,7 @@ para-archive
 For large tasks, use phased plans:
 ```
 para-plan Add payment system   # (propose phased plan)
-para-execute --phase=1         # Phase 1 branch → merge
-para-execute --phase=2         # Phase 2 branch → merge
-para-summarize
-para-archive
+para-workflow --auto           # Orchestrates all phases automatically
 ```
 
 ## File Structure
@@ -72,7 +79,7 @@ context/
 ├── plans/           # YYYY-MM-DD-task-name.md
 ├── summaries/       # YYYY-MM-DD-task-name-summary.md
 ├── archives/        # YYYY-MM-DD-HHMM-context.md
-├── data/            # Input/output files, specs
+├── data/            # Input/output files, specs, research docs
 └── servers/         # MCP tool wrappers
 ```
 
@@ -80,11 +87,13 @@ context/
 
 - Run `para-status` to see where you are in the workflow
 - Run `para-check` if unsure whether a task needs PARA
+- Run `para-research` before planning non-trivial tasks
+- Staff+ review is capped at 5 rounds with convergence detection
 - Full methodology details are in `~/.claude/CLAUDE.md`
 
 ---
 
 ## Notes
 
-- This skill is read-only — it only displays information
+- This skill is read-only -- it only displays information
 - No files are created or modified when running para-help
