@@ -40,13 +40,24 @@ Enhancing payroll API with token-efficient MCP integration.
   "active_context": [
     "context/plans/2025-11-08-payroll-api.md"
   ],
-  "completed_summaries": [
-    "context/summaries/2025-11-08-payroll-summary.md"
-  ],
+  "completed_summaries": [],
   "last_updated": "2025-11-08T15:20:00Z"
 }
 ```
 ````
+
+See `context-schema.md` (co-located in the para-init skill directory) for the full field reference.
+
+---
+
+## Non-Negotiable Rules
+
+### Never commit directly to main
+**All code changes go through the full PARA workflow: plan -> branch -> PR -> review -> merge.**
+
+This includes small changes: version bumps, one-liner fixes, config tweaks, documentation updates. There is no such thing as "too small for a PR."
+
+If a request sounds like it could bypass this (e.g. "make a quick update", "just bump the version", "minor fix"), **always ask the user for explicit confirmation before proceeding outside the workflow.** Only skip if the user explicitly and directly instructs otherwise.
 
 ---
 
@@ -61,66 +72,85 @@ Enhancing payroll API with token-efficient MCP integration.
 ## Workflow Loop
 
 ```
-Plan → Review → Execute → Summarize → Archive
+Research -> Plan -> Review Plan -> Execute -> Review PR -> Summarize -> Archive
 ```
 
-### 1. Plan (Collaborative)
+For multi-phase work, use `para-workflow` to orchestrate the full cycle automatically.
+
+### 1. Research (Optional but Recommended)
+
+Run `para-research` to perform deep codebase exploration before planning:
+- Produces a structured research doc at `context/data/YYYY-MM-DD-task-name-research.md`
+- Covers architecture, components, API contracts, patterns, graceful degradation, gaps
+- Becomes primary input for the planning phase
+
+### 2. Plan (Collaborative)
 
 1. **Ensure context directory exists:**
    ```bash
    mkdir -p context/{data,plans,summaries,archives,servers}
    ```
 
-2. **Ask clarifying questions (CRITICAL):**
+2. **Check for research doc** -- use as primary input if available
+
+3. **Ask clarifying questions (CRITICAL):**
    - Ask 1-4 focused questions about scope, approach, constraints, and preferences
    - Skip only if the task is trivially simple with no meaningful choices
-   - Explore the codebase *after* getting answers, not before
 
-3. **Explore codebase:**
+4. **Explore codebase:**
    - Identify existing patterns, conventions, and affected components
+   - Identify interface boundaries between systems and existing graceful degradation patterns
 
-4. **Draft plan:**
-   - Create `context/plans/YYYY-MM-DD-task-name.md`
-   - Include: Objective, Approach, Risks, Success Criteria
-   - For complex work (>5-10 files or multiple architectural layers), propose a phased plan:
-     - Master plan: `YYYY-MM-DD-task-name.md`
-     - Sub-plans: `YYYY-MM-DD-task-name-phase-1.md`, `...-phase-2.md`, etc.
+5. **Draft plan** applying Staff+ engineering criteria:
+   - Core principles, architecture decisions, interface boundaries, graceful degradation
+   - Implementation steps as checklist items (each item = one git commit message)
+   - TDD ordering: tests before implementation
+   - For complex work, propose a phased plan (master + sub-plans)
+   - Complex plans undergo 2-3 automatic self-review rounds before being presented for human review
 
 **Default to asking questions.** Plans created collaboratively succeed more often than plans based on assumptions.
 
-### 2. Review
+### 3. Review Plan
 
-Pause and request human validation of the plan before proceeding.
+Run `para-review --plan` for independent Staff+ agent review:
+- Delegates to a separate agent with Staff+ FAANG engineer persona
+- Reviews architecture, TDD ordering, completeness, scope
+- Loops until approved (MUST FIX -> address -> re-review)
+- Review loops are capped at 5 rounds with convergence detection
 
-### 3. Execute
+### 4. Execute
 
 **Git workflow (mandatory in git repositories):**
 
 1. **Create a branch:** `git checkout -b para/{task-name}`
    - For phased plans: `para/{task-name}-phase-N`
 
-2. **Track todos in `context/context.md`** -- extract implementation steps from the plan as a checkbox list.
+2. **Track todos in `context/context.md`** -- extract checklist items from the plan. Each item's text becomes the commit message.
 
-3. **Commit after EVERY completed todo (Spec-Driven TDD cycle):**
-   1. Confirm spec + stubs exist for this step (from planning phase)
-   2. Write tests first based on the plan's `Tests:` annotation and spec — tests should initially fail
-   3. Implement — replace stubs with real logic to make tests pass
-   4. Verify — run the test suite to confirm all tests pass
-   5. Mark the todo `[x]` in `context/context.md`
-   6. Commit with the todo text as the message
-   - Each commit = one atomic, complete unit of work
-   - If a todo has no meaningful automated tests (config changes, docs, templates), skip steps 1–4
+3. **Commit after EVERY completed todo (TDD cycle):**
+   - Confirm spec + stubs exist
+   - Write tests first (red)
+   - Implement to make tests pass (green)
+   - Mark `[x]` in `context/context.md`
+   - Commit with the checklist item text as the message
 
-**MCP integration:** Use wrappers in `context/servers/` to preprocess large data before passing results into model context.
+   `para-execute` enforces spec + stubs + TDD for code-bearing plans. Plans that are markdown-only or docs-only may relax this in their Out-of-Scope section.
 
-### 4. Summarize
+### 5. Review PR
+
+Run `para-review --pr` for independent Staff+ agent review of the implementation:
+- Checks commit-plan alignment, test quality, conventions
+- Loops until approved
+- Review loops are capped at 5 rounds with convergence detection
+
+### 6. Summarize
 
 Write a report to `context/summaries/YYYY-MM-DD-task-name-summary.md` covering:
 - What changed and why
-- MCP tools or data sources used
 - Key learnings
+- Staff+ review results
 
-### 5. Archive
+### 7. Archive
 
 - Move `context/context.md` to `context/archives/YYYY-MM-DD-context.md`
 - Create a fresh `context/context.md` seeded with any ongoing references
