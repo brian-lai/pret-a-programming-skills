@@ -55,9 +55,9 @@ Reference the spec and stub file paths in the plan.
 
 ### Step 5: Draft the plan
 
-Create the plan file(s) using the templates in `para-init/assets/templates/`:
-- Simple plan: `context/plans/YYYY-MM-DD-task-name.md` (use `plan-template.md`)
-- Phased plan: `context/plans/YYYY-MM-DD-task-name.md` + phase sub-plans (use `phased-plan-master-template.md` and `phased-plan-sub-template.md`)
+Create the plan file(s) using the co-located templates:
+- Simple plan: `context/plans/YYYY-MM-DD-task-name.md` (use `plan-template.md` in this skill directory)
+- Phased plan: `context/plans/YYYY-MM-DD-task-name.md` + phase sub-plans (use `phased-plan-master-template.md` and `phased-plan-sub-template.md` in this skill directory)
 
 **Every implementation step MUST include a `Tests:` annotation** specifying what tests to write.
 

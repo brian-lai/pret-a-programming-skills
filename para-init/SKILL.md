@@ -21,7 +21,7 @@ para-init --template=full     # Comprehensive project CLAUDE.md
 ## What to Do
 
 1. **Set up global methodology file** at `~/.claude/CLAUDE.md`:
-   - Read the methodology content from `para-init/assets/METHODOLOGY.md` (in this skills repo)
+   - Read the methodology content from `METHODOLOGY.md` (co-located in this skill directory)
    - If `~/.claude/CLAUDE.md` does not exist, create it with that content
    - If it already exists, do NOT overwrite it — inform the user it was left intact
 
@@ -48,8 +48,8 @@ para-init --template=full     # Comprehensive project CLAUDE.md
    Replace `TIMESTAMP` with the current ISO 8601 datetime.
 
 4. **Create project `CLAUDE.md`** (if missing) from the appropriate template:
-   - `--template=basic` (default): use `para-init/assets/templates/claude-basic-template.md`
-   - `--template=full`: use `para-init/assets/templates/claude-full-template.md`
+   - `--template=basic` (default): use `claude-basic-template.md` (co-located in this skill directory)
+   - `--template=full`: use `claude-full-template.md` (co-located in this skill directory)
    - Replace `{PROJECT_NAME}` placeholder with the current directory name
    - If `CLAUDE.md` already exists, do NOT overwrite it — inform the user
 
@@ -81,4 +81,4 @@ Next steps:
 
 - The `context/` directory should be added to `.gitignore` — it contains local-only work state
 - The `~/.claude/CLAUDE.md` file is global and shared across all projects
-- Templates in `para-init/assets/templates/` are reference files read by this skill; they are not auto-installed into the project
+- Templates co-located in this skill directory are reference files read by this skill; they are not auto-installed into the project

@@ -26,7 +26,7 @@ para-summarize --phase=N         # Summarize specific phase
 3. **Determine the summary filename:**
    - Simple plan: `context/summaries/YYYY-MM-DD-task-name-summary.md`
    - Phased plan: `context/summaries/YYYY-MM-DD-task-name-phase-N-summary.md`
-4. **Create the summary file** using the template in `para-init/assets/templates/summary-template.md` with these sections:
+4. **Create the summary file** using `summary-template.md` (co-located in this skill directory) with these sections:
    - **Date & Status** — when completed, success/failure
    - **Changes Made** — files modified/created with descriptions
    - **Rationale** — why these changes were made (reference the plan)
