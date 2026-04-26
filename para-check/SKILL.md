@@ -23,10 +23,10 @@ If no request is provided, ask: "What task would you like me to evaluate?"
 
 ```
 Does this request require code or file changes?
-├─ YES → USE PARA (Plan → Review → Execute → Summarize → Archive)
-└─ NO  → SKIP PARA
-         ├─ About project code? → Direct answer with file references
-         └─ General question?   → Standard response
+├─ YES -> USE PARA (Research -> Plan -> Review -> Execute -> Review -> Summarize -> Archive)
+└─ NO  -> SKIP PARA
+         ├─ About project code? -> Direct answer with file references
+         └─ General question?   -> Standard response
 ```
 
 **Use PARA** for tasks that result in git changes:
@@ -67,12 +67,12 @@ PARA Workflow Check
 
 Request: "Where is the auth middleware defined?"
 
-  ✗ SKIP PARA — Answer directly
+  ✗ SKIP PARA -- Answer directly
 
 Reason: This is a read-only question with no file changes needed.
 ```
 
 ## Notes
 
-- When in doubt, bias towards using PARA — the overhead of a plan is low, and it prevents wasted work
+- When in doubt, bias towards using PARA -- the overhead of a plan is low, and it prevents wasted work
 - If a task starts as informational but leads to fixes, switch to PARA at that point
