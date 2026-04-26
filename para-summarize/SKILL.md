@@ -39,6 +39,19 @@ para-summarize --phase=N         # Summarize specific phase
    - Update `last_updated` timestamp
 6. **Display:** "Summary written to `context/summaries/{filename}`"
 
+## Standalone vs Workflow Invocation
+
+**Standalone** (invoked manually by the user outside of `para-workflow`):
+- After writing the summary, guide the user on next steps: push the branch, create a PR, run `para-review --pr` for Staff+ review
+- Include push/PR guidance in the output
+
+**Workflow** (invoked by `para-workflow` as part of the orchestrated cycle):
+- The PR has already been created by the workflow orchestrator (Step 2)
+- Skip the push/PR guidance -- `para-workflow` handles PR creation and review
+- Just write the summary and update `context/context.md`
+
+To detect which mode: check whether `context/context.md` contains a `workflow` object in its JSON metadata. If present, this is a workflow invocation.
+
 ## After Summarizing
 
 Run `para-archive` to clean up context and start fresh for the next task.
