@@ -29,15 +29,17 @@ para-status --files          # List all context files with dates
 
 2. **Read and parse `context/context.md`:**
    - Human-readable summary section (above the JSON block)
-   - JSON block: `active_context`, `completed_summaries`, `last_updated`, `phased_execution` (if present)
+   - JSON block: `active_context`, `completed_summaries`, `research_docs`, `last_updated`, `phased_execution`, `workflow` (if present)
 
 3. **Check git status** for uncommitted changes (run `git status --short`)
 
 4. **Determine workflow state** and next action:
-   - **Idle** (`active_context` is empty) → suggest `para-plan`
-   - **Planning** (`active_context` has a plan, no `execution_branch`) → "Review the plan, then run `para-execute`"
-   - **Executing** (`execution_branch` present, todos in context) → "Continue working through todos, or run `para-summarize` when done"
-   - **Summarized** (`completed_summaries` updated, `active_context` empty) → suggest `para-archive`
+   - **Idle** (`active_context` is empty, no `research_docs`) -> suggest `para-research` or `para-plan`
+   - **Researching** (`research_docs` present, `active_context` is empty) -> "Research complete. Run `para-plan` to create an implementation plan using the research."
+   - **Planning** (`active_context` has a plan, no `execution_branch`) -> "Run `para-review --plan` for Staff+ review, then `para-execute`"
+   - **Executing** (`execution_branch` present, todos in context) -> "Continue working through todos, or run `para-summarize` when done"
+   - **Workflow Active** (`workflow` object present) -> "Workflow in progress: phase {current_phase}, step {current_step}. Run `para-workflow` to resume."
+   - **Summarized** (`completed_summaries` updated, `active_context` empty) -> suggest `para-archive`
 
 5. **Display output:**
 
@@ -50,10 +52,19 @@ Current Work:
 Active Plans:
    {list of active_context entries, or "None"}
 
+Research Docs:
+   {list of research_docs, or "None"}
+
 Completed Summaries:
    {list of completed_summaries, or "None"}
 
 Last Updated: {last_updated timestamp}
+
+{If workflow present:}
+Workflow:
+   Mode: {mode}
+   Phase {current_phase}, Step: {current_step}
+   Completed: {phases_completed}
 
 {If phased_execution present:}
 Phase Progress:
@@ -73,5 +84,5 @@ Next Action:
 
 ## Notes
 
-- This skill is read-only — it never modifies any files
+- This skill is read-only -- it never modifies any files
 - Run this anytime to reorient yourself in the workflow

@@ -26,7 +26,7 @@ para-archive --seed          # Carry forward relevant context from current sessi
 
 3. **Move `context/context.md`** to `context/archives/YYYY-MM-DD-HHMM-context.md`
 
-4. **Create a fresh `context/context.md`:**
+4. **Create a fresh `context/context.md`** using `../para-init/context-template.md` as reference (see `../para-init/context-schema.md` for the full field reference):
 
    Default and `--fresh` behavior:
    ````markdown

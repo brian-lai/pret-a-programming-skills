@@ -2,6 +2,8 @@
 
 {WORK_SUMMARY}
 
+> See `context-schema.md` (co-located in the para-init skill directory) for the full field reference.
+
 ---
 
 ```json
