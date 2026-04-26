@@ -1,16 +1,16 @@
 # pret-a-programming-skills
 
-PARA workflow methodology as [Codex CLI](https://developers.openai.com/codex/cli/) agent skills. Ready-to-wear structured development.
+PARA workflow methodology as agent skills for any CLI tool that supports the [Agent Skills](https://agentskills.io) open standard. Ready-to-wear structured development.
 
-**PARA:** Plan → Review → Execute → Summarize → Archive
+**PARA:** Research -> Plan -> Review Plan -> Execute -> Review PR -> Summarize -> Archive
 
 ---
 
 ## What Is This?
 
-The PARA-Programming methodology brings structured, plan-driven development to AI coding sessions. Instead of ad-hoc changes, every non-trivial task starts with a plan, gets reviewed, is executed with commit-per-todo discipline, and ends with a summary.
+The PARA-Programming methodology brings structured, plan-driven development to AI coding sessions. Instead of ad-hoc changes, every non-trivial task starts with research, gets planned collaboratively, undergoes Staff+ review, is executed with commit-per-todo discipline, and ends with a summary.
 
-This repo packages that methodology as Codex CLI skills — one skill per PARA workflow step.
+This repo packages that methodology as agent skills -- one skill per PARA workflow step, compatible with any CLI tool that supports the Agent Skills open standard (Codex CLI, Gemini CLI, etc.).
 
 > **Claude Code user?** The original plugin lives at [para-programming-plugin](https://github.com/brian-lai/para-programming-plugin) and uses Claude Code slash commands.
 
@@ -21,8 +21,11 @@ This repo packages that methodology as Codex CLI skills — one skill per PARA w
 | Skill | Trigger Examples | Purpose |
 |-------|-----------------|---------|
 | `para-init` | "initialize PARA", "set up context directory" | Initialize PARA structure in a project |
+| `para-research` | "research this codebase", "deep dive into" | Deep codebase exploration producing a research document |
 | `para-plan` | "create a plan", "plan this task", "let's plan" | Create a planning document (collaborative) |
+| `para-review` | "review the plan", "review this PR" | Staff+ independent agent review of plan or PR |
 | `para-execute` | "execute the plan", "start implementing" | Create branch, extract todos, start execution with spec-driven TDD |
+| `para-workflow` | "run the workflow", "orchestrate phases" | Orchestrate full multi-phase cycle automatically |
 | `para-summarize` | "summarize work", "wrap up session" | Generate post-work summary document |
 | `para-archive` | "archive context", "start fresh" | Archive context and create a clean slate |
 | `para-status` | "what's the PARA status", "where are we" | Check current workflow state |
@@ -35,8 +38,8 @@ This repo packages that methodology as Codex CLI skills — one skill per PARA w
 
 Skills are loaded from two locations:
 
-- **User-global** (`~/.agents/skills/`) — available in every project
-- **Project-local** (`.agents/skills/`) — available only in that project
+- **User-global** (`~/.agents/skills/`) -- available in every project
+- **Project-local** (`.agents/skills/`) -- available only in that project
 
 ### Option 1: User-global (recommended)
 
@@ -44,7 +47,7 @@ Skills are loaded from two locations:
 git clone https://github.com/brian-lai/pret-a-programming-skills.git ~/.agents/skills/para
 ```
 
-This clones the entire repo into a `para/` subfolder inside your user skills directory. Codex will discover all 8 skills automatically.
+This clones the entire repo into a `para/` subfolder inside your user skills directory. Your agent will discover all 11 skills automatically.
 
 ### Option 2: Project-local
 
@@ -67,32 +70,36 @@ cd ~/.agents/skills/para && git pull
 # 1. Initialize PARA in your project
 para-init
 
-# 2. Plan a task (collaborative — Claude will ask clarifying questions)
+# 2. Research the codebase (optional but recommended)
+para-research Add user authentication
+
+# 3. Plan a task (collaborative -- agent will ask clarifying questions)
 para-plan Add user authentication
 
-# 3. Review the plan, then execute
+# 4. Get Staff+ review of the plan
+para-review --plan
+
+# 5. Execute the plan
 para-execute
 
-# 4. Work through todos (Claude commits after each one)
+# 6. Get Staff+ review of the implementation
+para-review --pr
 
-# 5. Summarize and archive
+# 7. Summarize and archive
 para-summarize
 para-archive
 ```
 
-For large tasks, use phased plans:
+For large tasks, use phased plans with automatic orchestration:
 
 ```
-para-plan Add payment system      # → choose phased plan
-para-execute --phase=1            # Phase 1 branch → PR → merge
-para-execute --phase=2            # Phase 2 branch → PR → merge
-para-summarize
-para-archive
+para-plan Add payment system      # -> choose phased plan
+para-workflow --auto              # Orchestrates all phases: execute -> PR -> review -> merge
 ```
 
 ---
 
-## File Structure Created
+## File Structure
 
 After `para-init`, your project will have:
 
@@ -102,11 +109,28 @@ context/
 ├── plans/           # YYYY-MM-DD-task-name.md
 ├── summaries/       # YYYY-MM-DD-task-name-summary.md
 ├── archives/        # YYYY-MM-DD-HHMM-context.md
-├── data/            # Input/output files, specs
+├── data/            # Input/output files, specs, research docs
 └── servers/         # MCP tool wrappers
 ```
 
-> Add `context/` to `.gitignore` — it contains local-only work state.
+Skills are organized with co-located templates:
+
+```
+pret-a-programming-skills/
+├── para-init/           # SKILL.md + METHODOLOGY.md + 4 templates
+├── para-research/       # SKILL.md + research-template.md
+├── para-plan/           # SKILL.md + 3 plan templates
+├── para-review/         # SKILL.md
+├── para-execute/        # SKILL.md
+├── para-workflow/       # SKILL.md
+├── para-summarize/      # SKILL.md + summary-template.md
+├── para-archive/        # SKILL.md
+├── para-status/         # SKILL.md
+├── para-check/          # SKILL.md
+└── para-help/           # SKILL.md
+```
+
+> Add `context/` to `.gitignore` -- it contains local-only work state.
 
 ---
 
