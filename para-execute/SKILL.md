@@ -15,8 +15,6 @@ Execute the active plan by creating a branch and tracking todos with spec-driven
 ```
 para-execute                    # Auto-detect plan; prompts for phase if phased
 para-execute --phase=N          # Execute specific phase
-para-execute --branch=name      # Custom branch name (simple plans only)
-para-execute --no-branch        # Skip branch creation
 ```
 
 ## What to Do
@@ -36,7 +34,7 @@ para-execute --no-branch        # Skip branch creation
 - `context/context.md` must exist with an active plan
 - If no active plan: "No active plan found. Run `para-plan` first."
 - If dirty git state: warn user and offer to continue or stash first
-- If target branch already exists: ask — continue on it or create with suffix?
+- If target branch already exists: ask -- continue on it or create with suffix?
 
 ## Context Update Format
 
@@ -73,6 +71,8 @@ _Update this section as you complete items._
 ```
 ````
 
+See `../para-init/context-schema.md` for the full field reference.
+
 For phased plans, also include `phased_execution` block with phase statuses and `current_phase: N`.
 
 ## Spec-Driven TDD Cycle (Mandatory for Every Todo)
@@ -83,28 +83,30 @@ Before starting any todo, verify that the active plan references a spec file (`c
 
 For each todo:
 
-1. **Confirm spec + stubs exist** — locate the stub source file(s) for this step. If stubs are missing (planning was skipped), create them now from the spec before writing tests.
+1. **Confirm spec + stubs exist** -- locate the stub source file(s) for this step. If stubs are missing (planning was skipped), create them now from the spec before writing tests.
 
-2. **Write tests first** — based on the plan's `Tests:` annotation and the spec. Tests import the stub and assert expected behavior. Tests should **initially fail**.
+2. **Write tests first** -- based on the plan's `Tests:` annotation and the spec. Tests import the stub and assert expected behavior. Tests should **initially fail**.
 
-3. **Implement** — replace stub bodies with real logic to make tests pass. Write the minimum code needed.
+3. **Run tests to see them fail (red)** -- confirm tests fail for the right reason (missing implementation, not syntax errors).
 
-4. **Verify** — run the test suite to confirm **all** tests pass.
+4. **Implement** -- replace stub bodies with real logic to make tests pass. Write the minimum code needed.
 
-5. **Mark complete and commit:**
+5. **Run tests to see them pass (green)** -- verify all tests pass. If any fail, fix before proceeding.
+
+6. **Mark complete and commit:**
    - Mark the todo `[x]` in `context/context.md`
    - Stage changes: `git add -A`
    - Commit immediately with the todo text as the message
 
-**Exception:** If a todo has no meaningful automated tests (e.g., config changes, documentation, template updates), note this in the commit and skip steps 1–4.
+**Exception:** If a todo has no meaningful automated tests (e.g., config changes, documentation, template updates), note this in the commit and skip steps 1-5.
 
-When all todos are complete, run `para-summarize`.
+When all todos are complete, suggest running `para-review --pr` for independent Staff+ review before merging. Then run `para-summarize`.
 
 ## Edge Cases
 
 - **No implementation steps in plan:** Prompt user to provide todos manually
 - **Multiple active plans:** Ask user which one to execute
-- **Branch already exists:** Ask — continue on existing branch, create with suffix, or cancel?
+- **Branch already exists:** Ask -- continue on existing branch, create with suffix, or cancel?
 - **Todo too large:** Break it into smaller sub-items before implementing
 
 ## Notes
